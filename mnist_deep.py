@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # load MNIST data
 import input_data
-mnist = input_data.read_data_sets("Mnist_data/", one_hot=True)
+mnist = input_data.read_data_sets("/home/dengjie/dengjie/project/Mnist/mnist/MNIST_data/", one_hot=True)
 
 # start tensorflow interactiveSession
 import tensorflow as tf
@@ -28,10 +28,10 @@ def max_pool_2x2(x):
 x = tf.placeholder("float", [None, 784])
 y_ = tf.placeholder("float", [None, 10])
 # variables
-W = tf.Variable(tf.zeros([784,10]))
-b = tf.Variable(tf.zeros([10]))
+#W = tf.Variable(tf.zeros([784,10]))
+#b = tf.Variable(tf.zeros([10]))
 
-y = tf.nn.softmax(tf.matmul(x,W) + b)
+#y = tf.nn.softmax(tf.matmul(x,W) + b)
 
 # first convolutinal layer
 w_conv1 = weight_variable([5, 5, 1, 32])
@@ -68,16 +68,20 @@ y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, w_fc2) + b_fc2)
 
 # train and evaluate the model
 cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))
-train_step = tf.train.GradientDescentOptimizer(1e-3).minimize(cross_entropy)
-#train_step = tf.train.AdagradOptimizer(1e-5).minimize(cross_entropy)
+#train_step = tf.train.GradientDescentOptimizer(1e-3).minimize(cross_entropy)
+#train_step = tf.train.AdagradOptimizer(1e-4).minimize(cross_entropy)
+train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 sess.run(tf.initialize_all_variables())
+
+saver = tf.train.Saver() #定义saver
+
 for i in range(20000):
 	batch = mnist.train.next_batch(50)
 	if i%100 == 0:
 		train_accuracy = accuracy.eval(feed_dict={x:batch[0], y_:batch[1], keep_prob:1.0})
 		print("step %d, train accuracy %g" %(i, train_accuracy))
 	train_step.run(feed_dict={x:batch[0], y_:batch[1], keep_prob:0.5})
-
+saver.save(sess, '/home/dengjie/dengjie/project/Mnist/mnist/model/model.ckpt') #模型储存位置
 print("test accuracy %g" % accuracy.eval(feed_dict={x:mnist.test.images, y_:mnist.test.labels, keep_prob:1.0}))
