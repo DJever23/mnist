@@ -1,0 +1,3 @@
+/home/dengjie/dengjie/project/Mnist/mnist/build/CMakeFiles/rebuild_cache.dir
+/home/dengjie/dengjie/project/Mnist/mnist/build/CMakeFiles/process.dir
+/home/dengjie/dengjie/project/Mnist/mnist/build/CMakeFiles/edit_cache.dir

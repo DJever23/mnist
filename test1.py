@@ -3,7 +3,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 sess = tf.InteractiveSession()
 def imageprepare(): 
-    im = Image.open('/home/dengjie/dengjie/project/Mnist/mnist/mnist_test/6c.png') #读取的图片所在路径，注意是28*28像素
+    im = Image.open('/home/dengjie/dengjie/project/Mnist/mnist/build/temp1.png') #读取的图片所在路径，注意是28*28像素
     plt.imshow(im)  #显示需要识别的图片
     plt.show()
     im = im.convert('L')
